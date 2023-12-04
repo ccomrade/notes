@@ -1,0 +1,13 @@
+name: docker
+
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: builder:latest
