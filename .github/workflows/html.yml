@@ -47,9 +47,12 @@ jobs:
           mkdir -p ~/.ssh
           echo '${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}' > ~/.ssh/deploy_key
           echo '${{ vars.DEPLOY_KNOWN_HOSTS }}' > ~/.ssh/deploy_known_hosts
-          echo '${{ vars.DEPLOY_SSH_CONFIG }}' > ~/.ssh/config
           chmod 700 ~/.ssh
           chmod 600 ~/.ssh/deploy_key
 
       - name: Deploy HTML
-        run: scp -v *.html webmaster@comrade.one:/srv/www/comrade.one/notes/
+        run: |
+          scp -v \
+          -o IdentityFile=~/.ssh/deploy_key \
+          -o UserKnownHostsFile=~/.ssh/deploy_known_hosts \
+          *.html webmaster@comrade.one:/srv/www/comrade.one/notes/
