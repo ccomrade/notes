@@ -22,6 +22,7 @@ jobs:
 
   deploy:
     if: github.ref == 'refs/heads/main'
+    needs: build
     runs-on: [self-hosted, deployer]
     steps:
       - name: Debug
