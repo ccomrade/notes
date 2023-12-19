@@ -29,6 +29,7 @@ jobs:
         run: |
           pwd
           ls -lha
+          printenv
 
       - name: Download HTML artifact
         uses: actions/download-artifact@v4
@@ -39,6 +40,7 @@ jobs:
         run: |
           pwd
           ls -lha
+          printenv
 
       - name: Configure SSH client
         run: |
