@@ -21,7 +21,7 @@ jobs:
             *.html
 
   deploy:
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main'
     runs-on: [self-hosted, deployer]
     steps:
       - name: Debug
