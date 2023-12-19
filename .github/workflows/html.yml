@@ -7,15 +7,46 @@ jobs:
     runs-on: ubuntu-latest
     container: ghcr.io/${{ github.repository }}/builder
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Build
+      - name: Build HTML
         run: make
 
-      - name: Upload
+      - name: Upload HTML artifact
         uses: actions/upload-artifact@v3
         with:
-          name: notes
+          name: notes-html
           path: |
             *.html
+
+  deploy:
+    if: github.ref == 'refs/heads/master'
+    runs-on: [self-hosted, deployer]
+    steps:
+      - name: Debug
+        run: |
+          pwd
+          ls -lha
+
+      - name: Download HTML artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: notes-html
+
+      - name: Debug
+        run: |
+          pwd
+          ls -lha
+
+      - name: Configure SSH client
+        run: |
+          mkdir -p ~/.ssh
+          echo '${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}' > ~/.ssh/deploy_key
+          echo '${{ vars.DEPLOY_KNOWN_HOSTS }}' > ~/.ssh/deploy_known_hosts
+          echo '${{ vars.DEPLOY_SSH_CONFIG }}' > ~/.ssh/config
+          chmod 700 ~/.ssh
+          chmod 600 ~/.ssh/deploy_key
+
+      - name: Deploy HTML
+        run: scp *.html webmaster@comrade.one:/srv/www/comrade.one/notes/
