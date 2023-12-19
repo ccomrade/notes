@@ -50,4 +50,4 @@ jobs:
           chmod 600 ~/.ssh/deploy_key
 
       - name: Deploy HTML
-        run: scp *.html webmaster@comrade.one:/srv/www/comrade.one/notes/
+        run: scp -v *.html webmaster@comrade.one:/srv/www/comrade.one/notes/
