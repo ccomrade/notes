@@ -28,21 +28,21 @@ jobs:
       - name: Cleanup
         run: find . -delete
 
-      - name: Set umask
-        run: umask 0022
+      - name: Download HTML artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: notes-html
 
-      - name: Configure SSH client
+      - name: Set permissions
+        run: chmod 644 *.html
+
+      - name: Configure SSH
         run: |
           mkdir -p ~/.ssh
           echo '${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}' > ~/.ssh/deploy_key
           echo '${{ vars.DEPLOY_KNOWN_HOSTS }}' > ~/.ssh/deploy_known_hosts
           chmod 700 ~/.ssh
           chmod 600 ~/.ssh/deploy_key
-
-      - name: Download HTML artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: notes-html
 
       - name: Deploy HTML
         run: |
