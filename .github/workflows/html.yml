@@ -25,22 +25,10 @@ jobs:
     needs: build
     runs-on: [self-hosted, deployer]
     steps:
-      - name: Debug
-        run: |
-          pwd
-          ls -lha
-          printenv
-
       - name: Download HTML artifact
         uses: actions/download-artifact@v4
         with:
           name: notes-html
-
-      - name: Debug
-        run: |
-          pwd
-          ls -lha
-          printenv
 
       - name: Configure SSH client
         run: |
@@ -52,7 +40,7 @@ jobs:
 
       - name: Deploy HTML
         run: |
-          scp -v \
+          scp \
           -o IdentityFile=~/.ssh/deploy_key \
           -o UserKnownHostsFile=~/.ssh/deploy_known_hosts \
           *.html webmaster@comrade.one:/srv/www/comrade.one/notes/
