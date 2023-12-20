@@ -28,9 +28,11 @@ jobs:
       - name: Cleanup
         run: find . -delete
 
+      - name: Set umask
+        run: umask 0022
+
       - name: Configure SSH client
         run: |
-          umask 0022
           mkdir -p ~/.ssh
           echo '${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}' > ~/.ssh/deploy_key
           echo '${{ vars.DEPLOY_KNOWN_HOSTS }}' > ~/.ssh/deploy_known_hosts
