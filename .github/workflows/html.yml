@@ -25,18 +25,19 @@ jobs:
     needs: build
     runs-on: [self-hosted, deployer]
     steps:
-      - name: Download HTML artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: notes-html
-
       - name: Configure SSH client
         run: |
+          umask 0022
           mkdir -p ~/.ssh
           echo '${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}' > ~/.ssh/deploy_key
           echo '${{ vars.DEPLOY_KNOWN_HOSTS }}' > ~/.ssh/deploy_known_hosts
           chmod 700 ~/.ssh
           chmod 600 ~/.ssh/deploy_key
+
+      - name: Download HTML artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: notes-html
 
       - name: Deploy HTML
         run: |
