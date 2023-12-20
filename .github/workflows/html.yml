@@ -25,6 +25,9 @@ jobs:
     needs: build
     runs-on: [self-hosted, deployer]
     steps:
+      - name: Cleanup
+        run: find . -delete
+
       - name: Configure SSH client
         run: |
           umask 0022
